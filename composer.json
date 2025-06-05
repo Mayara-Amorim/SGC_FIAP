@@ -1,0 +1,19 @@
+{
+    "name": "mayaramoreira/sgc_fiap",
+    "description": "Sistema Gerenciador de Cursos",
+    "type": "project",
+    "license": "GPL-3.0",
+    "autoload": {
+        "psr-4": {
+            "Mayaramoreira\\SgcFiap\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Mayara Amorim",
+            "email": "moreiraamorim.business@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {}
+}
