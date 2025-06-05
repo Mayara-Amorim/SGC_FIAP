@@ -1,16 +1,35 @@
 <?php
 require_once __DIR__ . '/../Model/EstudanteModel.php';
+require_once __DIR__ . '/../Service/Validation/ValidarDataNascimento.php';
+require_once __DIR__ . '/../Service/Validation/ValidarEmail.php';
+require_once __DIR__ . '/../Service/Validation/ValidarNome.php';
+
 class EstudanteController
 {
     private $eM;
+    private  $validadores;
 
     public function __construct()
     {
         $this->eM = new EstudanteModel();
+        $this->validadores = [
+            new ValidarNome(),
+            new ValidarEmail(),
+            new ValidarDataNascimento(),
+        ];
     }
 
     public function createEstudante($nome, $dataNascimento, $email)
     {
+        $dados = [
+            'nome' => $nome,
+            'dataNascimento' => $dataNascimento,
+            'email' => $email,
+        ];
+
+        foreach ($this->validadores as $validador) {
+            $validador->validar($dados);
+        }
         return $this->eM->createEstudante($nome, $dataNascimento, $email);
     }
 
