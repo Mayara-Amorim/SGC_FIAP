@@ -33,7 +33,7 @@ CREATE TABLE
 CREATE TABLE
     tb_usuarios (
         id INT AUTO_INCREMENT PRIMARY KEY,
-        estudante_id INT NOT NULL,
-        email UNIQUE NOT NULL,
-        senha NOT NULL FOREIGN KEY (estudante_id) REFERENCES tb_estudantes (id) ON DELETE CASCADE
+        nome VARCHAR(100),
+        email varchar(100) UNIQUE NOT NULL,
+        senha VARCHAR(100) NOT NULL
     );

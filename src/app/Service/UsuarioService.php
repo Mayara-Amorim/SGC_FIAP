@@ -19,31 +19,30 @@ class UsuarioService
         if (empty($email)) {
             $senha = $this->criptografarSenha($senha);
             $this->uM->createUsuario($email, $senha);
-            return $error = ["false"];
-        } else {
-            return $error = [
-                "error" => "true",
-                "msg" => "Usuario já existe"
-            ];
+            return true;
         }
+        return false;
     }
-    public function autenticarUsuario($email)
+    public function autenticarUsuario($email, $senha)
     {
-
         $usuario = $this->uM->getByEmail($email);
 
         if (!empty($usuario)) {
+            if ($this->compararSenhas($senha, $usuario["senha"])) {
+                if (session_status() == PHP_SESSION_NONE) {
+                    session_start();
+                }
+                $_SESSION['usuario_id'] = $usuario['id'];
+                $_SESSION['usuario_nome'] = $usuario['nome'];
+                $_SESSION['usuario_email'] = $usuario['email'];
 
-            if ($this->compararSenhas($email, $usuario["senha"])) {
-                //setar dados sessão
-                // $usuarioLogin . get() . setId(usuario . get() . getId());
-                // $usuarioLogin . get() . setNome(usuario . get() . getNome());
-                // return $usuarioLogin;
+                return true;
             }
         }
 
-        return null;
+        return false;
     }
+
 
     function criptografarSenha($senha)
     {

@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../Service/Validation\ValidationInterface.php';
+require_once __DIR__ . '/ValidationInterface.php';
 class ValidarDataNascimento  implements ValidationInterface
 {
 

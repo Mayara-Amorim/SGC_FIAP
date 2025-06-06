@@ -45,36 +45,50 @@ class TurmaController
 
     public function getAllTurmas()
     {
-        return $this->tM->getAllTurmas();
+        return json_encode($this->tM->getAllTurmas());
     }
 
 
     public function getByIdTurma($id)
     {
-        return $this->tM->getByIdTurma($id);
+        return json_encode($this->tM->getByIdTurma($id));
     }
 
 
     public function editTurma($id, $nome, $descricao, $tipo)
     {
-        return $this->tM->editTurma($id, $nome, $descricao, $tipo);
+        if (!empty($this->tM->editTurma($id, $nome, $descricao, $tipo))) {
+            json_encode([
+                'error' => false
+            ]);
+        }
+        return json_encode([
+            'erro' => true
+        ]);
     }
 
 
     public function delete($id)
     {
-        return $this->tM->softDeleteTurma($id);
+        if (!empty($this->tM->softDeleteTurma($id))) {
+            return json_encode([
+                'erro' => false
+            ]);
+        }
+        return json_encode([
+            'erro' => true
+        ]);
     }
 
 
     public function getByAtivoTurmas()
     {
-        return $this->tM->getByAtivoTurmas();
+        return json_encode($this->tM->getByAtivoTurmas());
     }
 
 
     public function getByNome($nome)
     {
-        return $this->tM->getByNome($nome);
+        return json_encode($this->tM->getByNome($nome));
     }
 }

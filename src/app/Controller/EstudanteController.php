@@ -33,7 +33,6 @@ class EstudanteController
         return $this->eM->createEstudante($nome, $dataNascimento, $email);
     }
 
-
     public function getAllEstudantes()
     {
         return $this->eM->getAllEstudantes();
@@ -42,7 +41,13 @@ class EstudanteController
 
     public function getByIdEstudante($id)
     {
-        return $this->eM->getByIdEstudante($id);
+        $data = $this->eM->getByIdEstudante($id);
+        if (empty($data)) {
+            http_response_code(404);
+            return false;
+        }
+        header("Content-type: application/json");
+        echo json_encode($data);
     }
 
 
