@@ -3,8 +3,9 @@ require_once __DIR__ . '/../Model/EstudanteModel.php';
 require_once __DIR__ . '/../Service/Validation/ValidarDataNascimento.php';
 require_once __DIR__ . '/../Service/Validation/ValidarEmail.php';
 require_once __DIR__ . '/../Service/Validation/ValidarNome.php';
+require_once __DIR__ . '/BaseController.php';
 
-class EstudanteController
+class EstudanteController extends BaseController
 {
     private $eM;
     private  $validadores;
@@ -35,7 +36,31 @@ class EstudanteController
 
     public function getAllEstudantes()
     {
-        return $this->eM->getAllEstudantes();
+        $offset = $_GET["start"] ?? 0;
+        $limit = $_GET["length"] ?? 25;
+        $search = $_GET["search"];
+        $columns = $_GET["columns"];
+        $order = $_GET["order"];
+        if (!empty($search)) {
+            $search = $search["value"];
+        }
+        if (!empty($order)) {
+            $order = $order[0];
+            $order = [$columns[$order["column"]]["name"], $order["dir"]];
+        } else {
+            $order = ["nome", "ASC"];
+        }
+
+        if ($limit == -1) {
+            $limit = null;
+        }
+        $estudantes = $this->eM->getAllEstudantes($offset, $limit, $search, $order);
+        return $this->sendJSON([
+            "data" => $estudantes["data"],
+            "draw" => $_GET["draw"],
+            "recordsTotal" => $estudantes["total"],
+            "recordsFiltered" => $estudantes["total"]
+        ]);
     }
 
 

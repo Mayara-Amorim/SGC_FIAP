@@ -1,7 +1,8 @@
 <?php
 require_once __DIR__ . '/../Service/UsuarioService.php';
 require_once __DIR__ . '/../Model/UsuarioModel.php';
-class UsuarioController
+require_once __DIR__ . '/BaseController.php';
+class UsuarioController extends BaseController
 {
     private $uS;
     //private $uM;
@@ -25,12 +26,17 @@ class UsuarioController
     {
         session_destroy();
     }
-    public function login($email, $senha)
+    public function login()
     {
+        $email =  $_POST['email'];
+        $senha = $_POST['senha'];
         if ($this->uS->autenticarUsuario($email, $senha)) {
-            return json_encode(["error" => false]);
+            return $this->sendJson(["error" => false]);
         }
-        http_response_code(401);
-        return json_encode(["error" => true]);
+        $this->sendJson(["error" => true], 401);
+    }
+    public function viewLogin()
+    {
+        echo file_get_contents("src/app/View/login.html");
     }
 }

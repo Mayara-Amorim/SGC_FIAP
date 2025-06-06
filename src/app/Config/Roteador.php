@@ -10,12 +10,16 @@ class Roteador
         $rotaEncontrada = false;
 
         foreach ($rotas as $rota) {
-            [$pattern, $controllerAction, $expectedMethod] = $rota;
+            //[$pattern, $controllerAction, $expectedMethod] = $rota;
+            [$pattern, $controllerAction, $expectedMethod, $middlewares] = array_pad($rota, 4, []);
 
             if ($method === $expectedMethod && preg_match("#^$pattern$#", $uri, $matches)) {
                 [$controllerName, $action] = explode('@', $controllerAction);
-                $fullController = __DIR__ . '/../' . $controllerName;
+                $controllerFilePath = __DIR__ . '/../' . $controllerName . '.php';
                 $controllerName = explode("/", $controllerName)[1];
+                if (file_exists($controllerFilePath)) {
+                    require_once $controllerFilePath;
+                }
                 if (class_exists($controllerName)) {
                     $controller = new $controllerName();
 
@@ -23,7 +27,22 @@ class Roteador
                         array_shift($matches);
                         $params = self::extrairParametros($method, $matches);
 
-                        call_user_func_array([$controller, $action], $params);
+                        $next = function () use ($controller, $action, $params) {
+                            call_user_func_array([$controller, $action], $params);
+                        };
+                        foreach (array_reverse($middlewares) as $middlewareClass) {
+                            if (!class_exists($middlewareClass)) {
+                                require_once __DIR__ . '/../' . $middlewareClass . '.php';
+                            }
+
+                            $middleware = new $middlewareClass();
+                            $next = function () use ($middleware, $next) {
+                                return $middleware->handle($_REQUEST, $next);
+                            };
+                        }
+
+
+                        $next();
                         $rotaEncontrada = true;
                         break;
                     }

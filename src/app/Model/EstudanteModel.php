@@ -35,14 +35,54 @@ class EstudanteModel
         $st->bindParam(1, $id, PDO::PARAM_INT);
         $st->execute();
     }
-    public function getAllEstudantes()
+    public function getAllEstudantes($offset = 0, $limit = 15, $search = '', $order = null)
     {
-        $st = $this->db->query('SELECT * FROM TB_ESTUDANTES');
-        return $st->fetchAll(PDO::FETCH_ASSOC);
+        $sql = "SELECT * FROM TB_ESTUDANTES";
+        $sqlCount = "SELECT COUNT(*) FROM TB_ESTUDANTES";
+        $params = [];
+        if (!empty($search)) {
+            $sql .= " WHERE nome LIKE :search";
+            $sqlCount .= " WHERE nome LIKE :search";
+            $params[':search'] = "%$search%";
+        }
+        if (!empty($order)) {
+            $coluna = preg_replace('/[^a-zA-Z0-9_]/', '', $order[0]);
+            $direcao = strtoupper($order[1]) === 'DESC' ? 'DESC' : 'ASC';
+            $sql .= " ORDER BY $coluna $direcao";
+        }
+        if ($limit && $offset > -1) {
+            $sql .= " LIMIT :limit OFFSET :offset";
+            $params[':limit'] = (int) $limit;
+            $params[':offset'] = (int) $offset;
+        }
+
+        // Preparar e executar SELECT
+        $stmt = $this->db->prepare($sql);
+        foreach ($params as $key => $value) {
+            $type = is_int($value) ? PDO::PARAM_INT : PDO::PARAM_STR;
+            $stmt->bindValue($key, $value, $type);
+        }
+        $stmt->execute();
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+
+        $countStmt = $this->db->prepare($sqlCount);
+        if (!empty($search)) {
+            $countStmt->bindValue(':search', "%$search%", PDO::PARAM_STR);
+        }
+        $countStmt->execute();
+        $count = $countStmt->fetchColumn();
+
+        return [
+            'data' => $data,
+            'total' => $count,
+        ];
     }
+
     public function getByAtivoEstudantes()
     {
         $st = $this->db->query('SELECT * FROM TB_ESTUDANTES WHERE ATIVO=1');
+        $st->execute();
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
     public function getByIdEstudante($id)
@@ -54,8 +94,8 @@ class EstudanteModel
     }
     public function getByNome($nome)
     {
-        $st = $this->db->prepare('SELECT * FROM TB_ESTUDANTES where nome=?');
-        $st->bindParam(1, $nome, PDO::PARAM_STR);
+        $st = $this->db->prepare('SELECT * FROM TB_ESTUDANTES  where nome like = ?');
+        $st->execute(['%' . $nome . '%']);
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
 }
