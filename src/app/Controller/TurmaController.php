@@ -1,52 +1,118 @@
 <?php
 require_once __DIR__ . '/../Model/TurmaModel.php';
-class TurmaController
+require_once __DIR__ . '/../Model/MatriculaModel.php';
+require_once __DIR__ . '/../Constants/Tipo.php';
+require_once __DIR__ . '/BaseController.php';
+require_once __DIR__ . '/../Service/Validation/ValidarNome.php';
+require_once __DIR__ . '/../Service/Validation/ValidarTipo.php';
+require_once __DIR__ . '/../Service/Validation/ValidarDescricao.php';
+class TurmaController extends BaseController
 {
     private $tM;
+    private  $validadores;
 
     public function __construct()
     {
         $this->tM = new TurmaModel();
+        $this->validadores = [
+            new ValidarNome(),
+            new ValidarDescricao(),
+            new ValidarTipo(),
+
+        ];
     }
 
-    public function createTurma($nome, $descricao, $tipo)
+    public function createTurma()
     {
-        return $this->tM->createTurma($nome, $descricao, $tipo);
-    }
+        $dados = [
+            'nome' => [$_POST["nome"], new ValidarNome()],
+            'descricao' => [$_POST["descricao"], new ValidarDescricao()],
+            'tipo' => [$_POST["tipo"],  new ValidarTipo()],
+        ];
 
+        foreach ($dados as $validador => $data) {
+            $data[1]->validar($data[0]);
+        }
+        return $this->tM->createTurma($dados['nome'][0], $dados['descricao'][0], $dados['tipo'][0]);
+    }
 
     public function getAllTurmas()
     {
-        return $this->tM->getAllTurmas();
+        $offset = $_GET["start"] ?? 0;
+        $limit = $_GET["length"] ?? 25;
+        $search = $_GET["search"];
+        $columns = $_GET["columns"];
+        $order = $_GET["order"];
+        if (!empty($search)) {
+            $search = $search["value"];
+        }
+        if (!empty($order)) {
+            $order = $order[0];
+            $order = [$columns[$order["column"]]["name"], $order["dir"]];
+        } else {
+            $order = ["nome", "ASC"];
+        }
+
+        if ($limit == -1) {
+            $limit = null;
+        }
+        $estudantes = $this->tM->getAllTurmas($offset, $limit, $search, $order);
+        return $this->sendJSON([
+            "data" => $estudantes["data"],
+            "draw" => $_GET["draw"],
+            "recordsTotal" => $estudantes["total"],
+            "recordsFiltered" => $estudantes["total"]
+        ]);
     }
 
 
     public function getByIdTurma($id)
     {
-        return $this->tM->getByIdTurma($id);
+        return $this->sendJson($this->tM->getByIdTurma($id));
     }
 
 
-    public function editTurma($id, $nome, $descricao, $tipo)
+    public function editTurma($id)
     {
-        return $this->tM->editTurma($id, $nome, $descricao, $tipo);
+        $dados = [
+            'nome' => [$_POST["nome"], new ValidarNome()],
+            'descricao' => [$_POST["descricao"], new ValidarDescricao()],
+            'tipo' => [$_POST["tipo"],  new ValidarTipo()],
+        ];
+
+        foreach ($dados as $validador => $data) {
+            $data[1]->validar($data[0]);
+        }
+        if (!empty($this->tM->editTurma($id, $dados['nome'][0], $dados['descricao'][0], $dados['tipo'][0]))) {
+            $this->sendJson(["error" => false]);
+            return;
+        }
+        $this->sendJson(["error" => true]);
     }
 
 
     public function delete($id)
     {
-        return $this->tM->softDeleteTurma($id);
+        if (!empty($this->tM->softDeleteTurma($id))) {
+            (new MatriculaModel())->deleteByTurma($id);
+            return json_encode([
+                'erro' => false
+            ]);
+        }
+        return json_encode([
+            'erro' => true
+        ]);
     }
 
 
     public function getByAtivoTurmas()
     {
-        return $this->tM->getByAtivoTurmas();
+        return json_encode($this->tM->getByAtivoTurmas());
     }
 
 
     public function getByNome($nome)
     {
-        return $this->tM->getByNome($nome);
+        return json_encode($this->tM->getByNome($nome));
     }
 }

@@ -1,0 +1,37 @@
+ body {
+      background-color: #f9f9f9;
+      font-family: 'Segoe UI', sans-serif;
+      padding: 2rem;
+    }
+
+    .nav-underline .nav-link {
+      font-size: 1.2rem;
+      padding: 1rem 1.5rem;
+      color: #111827;
+      border: none;
+    }
+
+    .nav-underline .nav-link.active {
+      font-weight: 600;
+      color: #111827;
+      border-bottom: 3px solid #111827;
+    }
+
+    .tab-content {
+      margin-top: 2rem;
+      background: white;
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    h3 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .required::after {
+    content: " *";
+    color: red;
+  }
+ 
+

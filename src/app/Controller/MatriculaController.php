@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../Model/MatriculaModel.php';
-class MatriculaController
+require_once __DIR__ . '/BaseController.php';
+class MatriculaController extends BaseController
 {
     private $mM;
 
@@ -9,15 +10,28 @@ class MatriculaController
         $this->mM = new MatriculaModel();
     }
 
-    public function createMatricula($idEstudante, $idTurma)
+    public function createMatricula()
     {
+        $idEstudante = $_POST["estudante"];
+        $idTurma = $_POST["turma"];
 
-        return $this->mM->createMatricula($idEstudante, $idTurma);
+        try {
+            $this->mM->createMatricula($idEstudante, $idTurma);
+            $this->sendJson(["error" => false]);
+        } catch (\Throwable $th) {
+            error_log($th->getMessage(), 0, "/dev/stderr");
+            $this->sendJson(["error" => true], 400);
+        }
     }
 
     public function getAllMatriculas()
     {
         return $this->mM->getAllMatriculas();
+    }
+
+    public function getByEstudantesInTurma($idTurma)
+    {
+        $this->sendJson($this->mM->getByEstudantesInTurma($idTurma));
     }
 
     public function getByIdMatricula($id)

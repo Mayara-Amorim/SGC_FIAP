@@ -1,53 +1,118 @@
- body {
-      background: #f4f4f4;
-      font-family: Arial, sans-serif;
+html, body {
+    height: 100%;
+    margin: 0;
+    font-family: 'Inter', 'Helvetica Neue', sans-serif;
+    background-color: #fff;
+}
+
+.container-login {
+    display: flex;
+    flex-direction: row;
+    height: 100vh;
+    width: 100%;
+}
+.login-text {
+    width: 50%;
+    background-color: #000;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4rem;
+    overflow: hidden;
+}
+
+.text-wrapper {
+    max-width: 500px;
+}
+#login{
+ 
+    font-size: 2.2rem;
+    line-height: 1.4;
+}
+
+
+.highlight-block {
+   
+    color: #fff;
+    padding: 1rem 1.5rem;
+    display: inline-block;
+    margin-bottom: 1rem;
+    font-weight: bold;
+    font-size: 2.2rem;
+    line-height: 1.4;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+}
+
+.highlight-block.small {
+    font-size: 1rem;
+    font-weight: normal;
+    line-height: 1.6;
+}
+
+
+.animate-fade-in {
+    animation: fadeInUp 1s ease-out both;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.login-form {
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem;
+    background-color: #fff;
+}
+.login-form form {
+    width: 100%;
+    max-width: 400px;
+}
+
+.btn-login {
+    background-color: #000;
+    color: #fff;
+    border-radius: 10px;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+}
+
+.btn-login:hover {
+    background-color: #fff;
+    color: #000000;
+    border: 1px solid #000
+}
+
+input {
+    margin-bottom: 1.2rem;
+}
+
+
+@media (max-width: 768px) {
+    .container-login {
+        flex-direction: column;
     }
 
-    .container {
-      width: 100%;
-      max-width: 400px;
-      margin: 80px auto;
-      background: white;
-      padding: 30px;
-      border-radius: 8px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    .login-text {
+        display: none;
     }
 
-    h2 {
-      text-align: center;
-      margin-bottom: 24px;
-      color: #333;
+    .login-form {
+        flex: none;
+        height: 100vh;
     }
-
-    input[type="email"],
-    input[type="password"] {
-      width: 100%;
-      padding: 12px;
-      margin-bottom: 16px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-
-    .btn {
-      width: 100%;
-      padding: 12px;
-      border: none;
-      border-radius: 4px;
-      font-size: 16px;
-      cursor: pointer;
-      margin-bottom: 10px;
-    }
-
-    .btn-login {
-      background-color: #007bff;
-      color: white;
-    }
-
-    .btn-register {
-      background-color: #28a745;
-      color: white;
-    }
-
-    .btn:hover {
-      opacity: 0.9;
-    }
+}
