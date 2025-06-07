@@ -25,6 +25,7 @@ class UsuarioController extends BaseController
     public function logout()
     {
         session_destroy();
+        header("Location: /");
     }
     public function login()
     {
@@ -38,5 +39,20 @@ class UsuarioController extends BaseController
     public function viewLogin()
     {
         echo file_get_contents("src/app/View/login.html");
+    }
+
+    public function dashboard()
+    {
+        include_once __DIR__ . "/../View/dashboard.php";
+    }
+
+    public function index()
+    {
+        if (!isset($_SESSION['usuario_id'])) {
+            header("Location: /login");
+            return;
+        }
+
+        header("Location: /dashboard");
     }
 }

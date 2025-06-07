@@ -21,28 +21,28 @@ class EstudanteModel
     }
     public function editEstudante($id, $nome, $data_nascimeto, $email)
     {
-        $st = $this->db->prepare('UPDATE TB_ESTUDANTES SET nome=? data_nascimento=?, email=? WHERE id= ?');
+        $st = $this->db->prepare('UPDATE TB_ESTUDANTES SET nome=?, data_nascimento=?, email=? WHERE id= ?');
         $st->bindParam(1, $nome, PDO::PARAM_STR);
         $st->bindParam(2, $data_nascimeto, PDO::PARAM_STR);
         $st->bindParam(3, $email, PDO::PARAM_STR);
         $st->bindParam(4, $id, PDO::PARAM_INT);
-
         $st->execute();
     }
     public function softDeleteEstudante($id)
     {
-        $st = $this->db->prepare('UPDATE TB_ESTUDANTES SET ativo = 0, deletado_em = CURRENT_DATE WHERE id = ?');
+        $st = $this->db->prepare('UPDATE TB_ESTUDANTES SET ativo = 0, desativado_em = CURRENT_DATE WHERE id = ?');
         $st->bindParam(1, $id, PDO::PARAM_INT);
         $st->execute();
     }
     public function getAllEstudantes($offset = 0, $limit = 15, $search = '', $order = null)
     {
-        $sql = "SELECT * FROM TB_ESTUDANTES";
-        $sqlCount = "SELECT COUNT(*) FROM TB_ESTUDANTES";
+        $sql = "SELECT * FROM TB_ESTUDANTES where ativo=1";
+        $sqlCount = "SELECT COUNT(*) FROM TB_ESTUDANTES  where ativo=1";
         $params = [];
+
         if (!empty($search)) {
-            $sql .= " WHERE nome LIKE :search";
-            $sqlCount .= " WHERE nome LIKE :search";
+            $sql .= " and nome LIKE :search";
+            $sqlCount .= " and nome LIKE :search";
             $params[':search'] = "%$search%";
         }
         if (!empty($order)) {
@@ -90,7 +90,7 @@ class EstudanteModel
         $st = $this->db->prepare('SELECT * FROM TB_ESTUDANTES WHERE id= ?');
         $st->bindParam(1, $id, PDO::PARAM_INT);
         $st->execute();
-        return $st->fetchAll(PDO::FETCH_ASSOC);
+        return $st->fetch(PDO::FETCH_ASSOC);
     }
     public function getByNome($nome)
     {

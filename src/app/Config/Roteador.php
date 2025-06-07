@@ -26,7 +26,7 @@ class Roteador
                     if (method_exists($controller, $action)) {
                         array_shift($matches);
                         $params = self::extrairParametros($method, $matches);
-
+                        $params = array_merge($matches, $params);
                         $next = function () use ($controller, $action, $params) {
                             call_user_func_array([$controller, $action], $params);
                         };

@@ -23,6 +23,20 @@ window.notifyWarning = ($msg) => {
   };
 };
 
+window.showLoadingModal = () => {
+  const modal = new bootstrap.Modal($("#loading-modal"));
+  modal.show();
+  window._loadingModal = modal;
+};
+
+window.hideLoadingModal = () => {
+  if (window._loadingModal) {
+    setTimeout(() => {
+      window._loadingModal.hide();
+    }, 600);
+  }
+};
+
 // toastr.success("Login realizado com sucesso!");
 // toastr.error("Erro ao tentar fazer login!");
 // toastr.info("Preencha todos os campos obrigatórios.");

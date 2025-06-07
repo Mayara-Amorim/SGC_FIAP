@@ -1,10 +1,10 @@
 <?php
 require_once __DIR__ . '/ValidationInterface.php';
-class ValidarNome  implements ValidationInterface
+class ValidarEmail  implements ValidationInterface
 {
-    public function validar(array $dados): void
+    public function validar($dados): void
     {
-        $email = htmlspecialchars(trim($dados['email'] ?? ''), ENT_QUOTES, 'UTF-8');
+        $email = htmlspecialchars(trim($dados ?? ''), ENT_QUOTES, 'UTF-8');
 
         if (empty($email)) {
             throw new InvalidArgumentException("O e-mail é obrigatório.");

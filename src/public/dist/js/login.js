@@ -8,7 +8,7 @@ $("#login__acessar").on("click", () => {
     .then((res) => {
       console.log(res);
       if (!res.error) {
-        window.location.href = "/src/app/View/dashboard.html";
+        window.location.href = "/dashboard";
         return;
       }
     })

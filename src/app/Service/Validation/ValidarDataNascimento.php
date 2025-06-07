@@ -3,9 +3,9 @@ require_once __DIR__ . '/ValidationInterface.php';
 class ValidarDataNascimento  implements ValidationInterface
 {
 
-    public function validar(array $dados): void
+    public function validar($dados): void
     {
-        $data = trim($dados['dataNascimento'] ?? '');
+        $data = trim($dados ?? '');
 
         if (empty($data)) {
             throw new InvalidArgumentException("A data de nascimento é obrigatória.");

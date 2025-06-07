@@ -24,10 +24,17 @@ final class MatriculaModel
         $st->bindParam(1, $id, PDO::PARAM_INT);
         $st->execute();
     }
+    public function deleteByTurma($idTurma)
+    {
+        $st = $this->db->prepare('DELETE FROM TB_MATRICULAS where turma_id = ?');
+        $st->bindParam(1, $idTurma, PDO::PARAM_INT);
+        $st->execute();
+    }
+
     public function getAllMatriculas()
     {
         $st = $this->db->query('
-        SELECT MAT.ID, MAT.DATA_MATRICULA, ESTUDANTES.ID, ESTUDANTES.NOME, TURMAS.ID, TURMAS.NOME FROM TB_MATRICULAS as MAT
+        SELECT  MAT.DATA_MATRICULA, ESTUDANTES.ID, ESTUDANTES.NOME, TURMAS.ID, TURMAS.NOME FROM TB_MATRICULAS as MAT
         JOIN TB_ESTUDANTES as ESTUDANTES
         ON  ESTUDANTES.ID = MAT.estudante_id
         JOIN TB_TURMAS AS TURMAS
@@ -45,12 +52,13 @@ final class MatriculaModel
     }
     public function getByEstudantesInTurma($idTurma)
     {
-        $st = $this->db->query('
-        SELECT MAT.ID, MAT.DATA_MATRICULA, ESTUDANTES.ID, ESTUDANTES.NOME FROM TB_MATRICULAS as MAT
+        $st = $this->db->prepare('
+        SELECT  MAT.DATA_MATRICULA, ESTUDANTES.ID, ESTUDANTES.NOME FROM TB_MATRICULAS as MAT
         JOIN TB_ESTUDANTES as ESTUDANTES
         ON  ESTUDANTES.ID = MAT.estudante_id
         where MAT.TURMA_ID = ?');
         $st->bindParam(1, $idTurma, PDO::PARAM_STR);
+        $st->execute();
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
 }

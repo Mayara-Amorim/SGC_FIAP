@@ -13,25 +13,21 @@ class EstudanteController extends BaseController
     public function __construct()
     {
         $this->eM = new EstudanteModel();
-        $this->validadores = [
-            new ValidarNome(),
-            new ValidarEmail(),
-            new ValidarDataNascimento(),
-        ];
+        $this->validadores = [];
     }
 
-    public function createEstudante($nome, $dataNascimento, $email)
+    public function createEstudante()
     {
         $dados = [
-            'nome' => $nome,
-            'dataNascimento' => $dataNascimento,
-            'email' => $email,
+            'nome' => [$_POST["nome"], new ValidarNome()],
+            'dataNascimento' => [$_POST["dt_nasc"], new ValidarDataNascimento()],
+            'email' => [$_POST["email"],  new ValidarEmail()],
         ];
 
-        foreach ($this->validadores as $validador) {
-            $validador->validar($dados);
+        foreach ($dados as $validador => $data) {
+            $data[1]->validar($data[0]);
         }
-        return $this->eM->createEstudante($nome, $dataNascimento, $email);
+        return $this->eM->createEstudante($dados['nome'][0], $dados['dataNascimento'][0], $dados['email'][0]);
     }
 
     public function getAllEstudantes()
@@ -76,9 +72,18 @@ class EstudanteController extends BaseController
     }
 
 
-    public function editEstudante($id, $nome, $dataNascimento, $email)
+    public function editEstudante($id)
     {
-        return $this->eM->editEstudante($id, $nome, $dataNascimento, $email);
+        $dados = [
+            'nome' => [$_POST["nome"], new ValidarNome()],
+            'dataNascimento' => [$_POST["dt_nasc"], new ValidarDataNascimento()],
+            'email' => [$_POST["email"],  new ValidarEmail()],
+        ];
+
+        foreach ($dados as $validador => $data) {
+            $data[1]->validar($data[0]);
+        }
+        return $this->eM->editEstudante($id, $dados['nome'][0], $dados['dataNascimento'][0], $dados['email'][0]);
     }
 
 
