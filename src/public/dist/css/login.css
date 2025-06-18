@@ -13,12 +13,28 @@ html, body {
 }
 .login-text {
     width: 50%;
-    background-color: #000;
+    background: linear-gradient(
+    135deg, /* Ângulo do gradiente */
+    #000000 0%, /* Quase preto */
+    #1a0a2a 25%, /* Um roxo bem escuro */
+    #ed145b 50%, /* Seu tom de rosa/vermelho */
+    #f26b6b 75%, /* Um rosa mais claro */
+    #000000 100% /* Volta para quase preto */
+  );
+  /* Define o tamanho do gradiente para ser maior que a tela, permitindo a movimentação */
+  background-size: 400% 400%;
+  /* Aplica a animação: nome, duração (bem longa), infinito e alternado */
+  animation: etherealAurora 10s ease infinite alternate;
+  /* Garante que o corpo preenche a tela inteira */
+  min-height: 100vh;
+  margin: 0; /* Remove margens padrão */
+  overflow: hidden;
     color: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 4rem;
+    /* animation: aurora 6s infinite alternate; */
     overflow: hidden;
 }
 
@@ -43,7 +59,7 @@ html, body {
     line-height: 1.4;
     box-decoration-break: clone;
     -webkit-box-decoration-break: clone;
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    
 }
 
 .highlight-block.small {
@@ -100,7 +116,27 @@ html, body {
 input {
     margin-bottom: 1.2rem;
 }
-
+@keyframes aurora {
+  0% {
+    background: black;
+  }
+  50% {
+    background: #ed145b;
+  }
+  100% {
+    background: black;
+  }
+}
+@keyframes etherealAurora {
+  0% {
+    
+    background-position: 0% 50%;
+  }
+  100% {
+    
+    background-position: 100% 50%;
+  }
+}
 
 @media (max-width: 768px) {
     .container-login {
