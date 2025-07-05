@@ -14,9 +14,8 @@ $turmas = (new TurmaModel())->getByAtivoTurmas();
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!-- Bootstrap -->
-
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
-  <!-- Datatable CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous"> <!-- Datatable CSS -->
   <link rel="stylesheet" href="https://cdn.datatables.net/2.3.1/css/dataTables.dataTables.min.css">
   <!-- Toastr CSS -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet" />
@@ -25,16 +24,47 @@ $turmas = (new TurmaModel())->getByAtivoTurmas();
 </head>
 
 <body>
-
-  <div class="container">
-    <div class="row d-flex justify-content-end">
-      <div class="col-auto">
-        <a class="btn btn-dark" href="/usuarios/logout">Logout</a>
+  <div class="welcome" style="background-color:var(--color-primary); color: var(--color-white); display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; font-family: Arial, sans-serif;">
+    <div style="display: flex; align-items: center;">
+      <div style="border-left: 1px solid white; padding-left: 15px;">
+        <div style="font-weight: bold; font-size: 18px;">Educação</div>
+        <div style="font-size: 14px;">Ambiente do ADMIN</div>
       </div>
     </div>
-    <ul class="nav nav-underline mb-3" id="myTab" role="tablist">
+    <div style="display: flex; align-items: center;">
+      <div style="display: flex; align-items: center;">
+        <div style="width: 36px; height: 36px; border-radius: 50%; border: 2px solid white; display: flex; align-items: center; justify-content: center; margin-right: 10px;">
+          <span><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
+              <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+              <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1" />
+            </svg></span>
+        </div>
+        <div>
+          <div style="font-weight: bold;"><?= $_SESSION['usuario_nome'] ?> </div>
+          <div style="font-size: 12px;"><?= $_SESSION['usuario_email'] ?></div>
+        </div>
+        <div class="btn-group">
+          <button id="dash__cared-down" type="button" class="btn text-white border-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+          </button>
+          <ul class="dropdown-menu">
+            </li>
+            <li> <a class="dropdown-item d-flex align-items-center gap-2" href="/usuarios/logout">
+                Logout
+                <i class="bi bi-box-arrow-right title"></i>
+              </a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+
+
+    <div class="row d-flex justify-content-end">
+    </div>
+    <ul class="nav nav-underline mb-3 justify-content-around" id="myTab" role="tablist">
       <li class="nav-item" role="presentation">
-        <button class="nav-link active" id="estudantes-tab" data-bs-toggle="tab" data-bs-target="#estudantes" type="button" role="tab">Estudantes</button>
+        <button class="nav-link active " id="estudantes-tab" data-bs-toggle="tab" data-bs-target="#estudantes" type="button" role="tab">Estudantes</button>
       </li>
       <li class="nav-item" role="presentation">
         <button class="nav-link" id="turmas-tab" data-bs-toggle="tab" data-bs-target="#turmas" type="button" role="tab">Turmas</button>
@@ -44,10 +74,10 @@ $turmas = (new TurmaModel())->getByAtivoTurmas();
 
     <div class="tab-content" id="myTabContent">
       <div class="tab-pane fade show active" id="estudantes" role="tabpanel">
-        <h3>Estudantes</h3>
+        <h3 class="title">Estudantes</h3>
         <div>
           <p>Aqui você pode gerenciar os estudantes cadastrados no sistema.</p>
-          <button type="button" class="btn btn-outline-dark" id="cadastrar_estudante" data-bs-toggle="modal" data-bs-target="#modalEstudante">Cadastrar</button>
+          <button type="button" class="btn btn-outline primary-color" data-bs-toggle="modal" data-bs-target="#modalEstudante">Cadastrar</button>
         </div>
 
 
@@ -55,10 +85,10 @@ $turmas = (new TurmaModel())->getByAtivoTurmas();
           <table class="table w-100" style="text-align: center; overflow-x: auto;" id="estudantes-table" aria-live="polite">
             <thead>
               <tr>
-                <th scope="col" style="width: 40% !important; background-color:black;color:antiquewhite" class="text-center">Nome</th>
-                <th scope="col" style="white-space: nowrap; background-color:black;color:antiquewhite" class="text-center">Nascimento</th>
-                <th scope="col" style="white-space: nowrap; background-color:black;color:antiquewhite" class="text-center">Email</th>
-                <th scope="col" style="white-space: nowrap; background-color:black;color:antiquewhite" class="text-center">Ações</th>
+                <th scope="col" style="width: 40% !important; background-color:var(--color-primary);color:var(--color-white)" class="text-center">Nome</th>
+                <th scope="col" style="white-space: nowrap; background-color:var(--color-primary);color:var(--color-white)" class="text-center">Nascimento</th>
+                <th scope="col" style="white-space: nowrap; background-color:var(--color-primary);color:var(--color-white)" class="text-center">Email</th>
+                <th scope="col" style="white-space: nowrap; background-color:var(--color-primary);color:var(--color-white)" class="text-center">Ações</th>
               </tr>
             </thead>
             <tbody>
@@ -68,9 +98,9 @@ $turmas = (new TurmaModel())->getByAtivoTurmas();
 
       </div>
       <div class="tab-pane fade" id="turmas" role="tabpanel">
-        <h3>Turmas</h3>
+        <h3 class="title">Turmas</h3>
         <p>Aqui você pode gerenciar as turmas e seus respectivos dados.</p>
-        <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#modalTurma">
+        <button type="button" class="btn btn-outline primary-color" data-bs-toggle="modal" data-bs-target="#modalTurma">
           Cadastrar Turma
         </button>
 
@@ -78,9 +108,9 @@ $turmas = (new TurmaModel())->getByAtivoTurmas();
           <table class="table w-100" style="text-align: center; overflow-x: auto;" id="turmas-table" aria-live="polite">
             <thead>
               <tr>
-                <th scope="col" style="width: 40% !important;background-color:black;color:antiquewhite" class="text-center">Nome</th>
-                <th scope="col" style="white-space: nowrap;background-color:black;color:antiquewhite" class="text-center">Tipo</th>
-                <th scope="col" style="white-space: nowrap;background-color:black;color:antiquewhite" class="text-center">Ações</th>
+                <th scope="col" style="width: 40% !important;background-color:var(--color-primary);color:var(--color-white)" class="text-center">Nome</th>
+                <th scope="col" style="white-space: nowrap;background-color:var(--color-primary);color:var(--color-white)" class="text-center">Tipo</th>
+                <th scope="col" style="white-space: nowrap;background-color:var(--color-primary);color:var(--color-white)" class="text-center">Ações</th>
 
               </tr>
             </thead>
@@ -120,7 +150,7 @@ $turmas = (new TurmaModel())->getByAtivoTurmas();
     <div class="modal-dialog">
       <div class="modal-content rounded-4 shadow">
         <div class="modal-header">
-          <h5 class="modal-title" id="modalEstudanteLabel">Cadastrar Estudante</h5>
+          <h5 class="modal-title title" id="modalEstudanteLabel">Cadastrar Estudante</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
         </div>
         <div class="modal-body">
@@ -154,7 +184,7 @@ $turmas = (new TurmaModel())->getByAtivoTurmas();
     <div class="modal-dialog">
       <div class="modal-content rounded-4 shadow">
         <div class="modal-header">
-          <h5 class="modal-title" id="modalTurmaLabel">Cadastrar Turma</h5>
+          <h5 class="modal-title title" id="modalTurmaLabel">Cadastrar Turma</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
         </div>
         <div class="modal-body">
@@ -203,7 +233,7 @@ $turmas = (new TurmaModel())->getByAtivoTurmas();
     <div class="modal-dialog">
       <div class="modal-content rounded-4 shadow">
         <div class="modal-header">
-          <h5 class="modal-title" id="modalMatriculaLabel">Matricular estudante</h5>
+          <h5 class="modal-title primary-color" id="modalMatriculaLabel">Matricular estudante</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
         </div>
         <div class="modal-body">
@@ -259,7 +289,7 @@ $turmas = (new TurmaModel())->getByAtivoTurmas();
   <!-- Scripts -->
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/notifyjs-browser@0.4.2/dist/notify.min.js"></script>
