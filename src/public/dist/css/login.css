@@ -98,13 +98,22 @@ html, body {
 }
 
 .btn-login {
-    background-color: #000;
     color: #fff;
     border-radius: 10px;
     font-weight: 600;
     padding: 0.75rem 1.5rem;
     font-size: 1rem;
     transition: background-color 0.3s;
+     background: linear-gradient(
+    135deg,
+   
+    #ed145b 50%, 
+    #f26b6b 75%
+  );
+   background-size: 400% 400%;
+
+    animation: etherealAurora 2s ease infinite alternate;
+    
 }
 
 .btn-login:hover {
@@ -119,7 +128,7 @@ html, body {
 
     animation: etherealAurora 2s ease infinite alternate;
     color: #ffffff;
-    border: 1px solid #000
+    
 }
 
 input {
