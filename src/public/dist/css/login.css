@@ -108,8 +108,17 @@ html, body {
 }
 
 .btn-login:hover {
-    background-color: #fff;
-    color: #000000;
+    background: linear-gradient(
+    135deg,
+    #000000 0%,
+    #1a0a2a 25%, 
+    #ed145b 50%, 
+    #f26b6b 75%
+  );
+   background-size: 400% 400%;
+
+    animation: etherealAurora 2s ease infinite alternate;
+    color: #ffffff;
     border: 1px solid #000
 }
 

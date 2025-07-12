@@ -8,11 +8,8 @@ final class ConnectionFactory
         $dbPassword = getenv('DB_KEY');
         $dsn = $dbHost;
         error_log(sprintf("dsn: %s - user: %s - pwd: %s", $dsn, $dbUser, $dbPassword));
-        $conn = new PDO($dsn, $dbUser, $dbPassword, array(
+        return new PDO($dsn, $dbUser, $dbPassword, array(
             PDO::ATTR_PERSISTENT => true
         ));
-
-
-        return $conn;
     }
 }
