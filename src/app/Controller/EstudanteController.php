@@ -23,11 +23,14 @@ class EstudanteController extends BaseController
             'dataNascimento' => [$_POST["dt_nasc"], new ValidarDataNascimento()],
             'email' => [$_POST["email"],  new ValidarEmail()],
         ];
-
-        foreach ($dados as $validador => $data) {
-            $data[1]->validar($data[0]);
+        try {
+            foreach ($dados as $validador => $data) {
+                $data[1]->validar($data[0]);
+            }
+            return $this->eM->createEstudante($dados['nome'][0], $dados['dataNascimento'][0], $dados['email'][0]);
+        } catch (\Throwable $th) {
+            return $this->sendJson(["error" => $th->getMessage()], 400);
         }
-        return $this->eM->createEstudante($dados['nome'][0], $dados['dataNascimento'][0], $dados['email'][0]);
     }
 
     public function getAllEstudantes()
@@ -80,10 +83,14 @@ class EstudanteController extends BaseController
             'email' => [$_POST["email"],  new ValidarEmail()],
         ];
 
-        foreach ($dados as $validador => $data) {
-            $data[1]->validar($data[0]);
+        try {
+            foreach ($dados as $validador => $data) {
+                $data[1]->validar($data[0]);
+            }
+            return $this->eM->editEstudante($id, $dados['nome'][0], $dados['dataNascimento'][0], $dados['email'][0]);
+        } catch (\Throwable $th) {
+            return $this->sendJson(["error" => $th->getMessage()], 400);
         }
-        return $this->eM->editEstudante($id, $dados['nome'][0], $dados['dataNascimento'][0], $dados['email'][0]);
     }
 
 

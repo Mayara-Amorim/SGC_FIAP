@@ -116,7 +116,7 @@ function createTurma() {
     })
     .catch((ex) => {
       console.log(ex);
-      return notifyError("Falha na autenticação");
+      return notifyError(ex);
     })
     .always(() => {
       //hideLoadingModal();
@@ -176,6 +176,7 @@ function editarTurma(id) {
     })
     .catch((err) => {
       console.error(err);
+      notifyError(err.responseJson.error);
     })
     .always(() => {
       //hideLoadingModal();
@@ -209,6 +210,7 @@ function updateTurma(id) {
     })
     .catch((err) => {
       console.log(err);
+      notifyError(err.responseJson.error);
     })
     .always(() => {
       ////hideLoadingModal();
@@ -223,6 +225,7 @@ function deletarTurma(id) {
     })
     .catch((err) => {
       console.error(err);
+      notifyError(err.responseJson.error);
     })
     .always(() => {
       ////hideLoadingModal();

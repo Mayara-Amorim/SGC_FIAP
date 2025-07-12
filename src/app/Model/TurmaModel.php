@@ -11,7 +11,7 @@ class TurmaModel
 
     public function createTurma($nome, $descricao, $tipo)
     {
-        $st = $this->db->prepare('INSERT INTO TB_TURMAS (nome, descricao, tipo) VALUES(?,?,?)');
+        $st = $this->db->prepare('INSERT INTO tb_turmas (nome, descricao, tipo) VALUES(?,?,?)');
         $st->bindParam(1, $nome, PDO::PARAM_STR);
         $st->bindParam(2, $descricao, PDO::PARAM_STR);
         $st->bindParam(3, $tipo, PDO::PARAM_STR);
@@ -21,7 +21,7 @@ class TurmaModel
     }
     public function editTurma($id, $nome, $descricao, $tipo)
     {
-        $st = $this->db->prepare('UPDATE TB_TURMAS SET nome=?, descricao=?, tipo=? WHERE id= ?');
+        $st = $this->db->prepare('UPDATE tb_turmas SET nome=?, descricao=?, tipo=? WHERE id= ?');
         $st->bindParam(1, $nome, PDO::PARAM_STR);
         $st->bindParam(2, $descricao, PDO::PARAM_STR);
         $st->bindParam(3, $tipo, PDO::PARAM_STR);
@@ -30,14 +30,14 @@ class TurmaModel
     }
     public function softDeleteTurma($id)
     {
-        $st = $this->db->prepare('UPDATE TB_TURMAS SET ativa = 0, desativado_em = CURRENT_DATE WHERE id = ?');
+        $st = $this->db->prepare('UPDATE tb_turmas SET ativa = 0, desativado_em = CURRENT_DATE WHERE id = ?');
         $st->bindParam(1, $id, PDO::PARAM_INT);
         return $st->execute();
     }
     public function getAllTurmas($offset = 0, $limit = 15, $search = '', $order = null)
     {
-        $sql = "SELECT * FROM TB_TURMAS where ativa=1";
-        $sqlCount = "SELECT COUNT(*) FROM TB_TURMAS  where ativa=1";
+        $sql = "SELECT * FROM tb_turmas where ativa=1";
+        $sqlCount = "SELECT COUNT(*) FROM tb_turmas  where ativa=1";
         $params = [];
 
         if (!empty($search)) {
@@ -80,20 +80,20 @@ class TurmaModel
     }
     public function getByAtivoTurmas()
     {
-        $st = $this->db->query('SELECT * FROM TB_TURMAS WHERE ativa=1');
+        $st = $this->db->query('SELECT * FROM tb_turmas WHERE ativa=1');
         $st->execute();
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
     public function getByIdTurma($id)
     {
-        $st = $this->db->prepare('SELECT * FROM TB_TURMAS WHERE id= ?');
+        $st = $this->db->prepare('SELECT * FROM tb_turmas WHERE id= ?');
         $st->bindParam(1, $id, PDO::PARAM_INT);
         $st->execute();
         return $st->fetch(PDO::FETCH_ASSOC);
     }
     public function getByNome($nome)
     {
-        $st = $this->db->prepare('SELECT * FROM TB_TURMAS where nome=?');
+        $st = $this->db->prepare('SELECT * FROM tb_turmas where nome=?');
         $st->bindParam(1, $nome, PDO::PARAM_STR);
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }

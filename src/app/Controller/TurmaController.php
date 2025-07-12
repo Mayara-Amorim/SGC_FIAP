@@ -30,10 +30,14 @@ class TurmaController extends BaseController
             'tipo' => [$_POST["tipo"],  new ValidarTipo()],
         ];
 
-        foreach ($dados as $validador => $data) {
-            $data[1]->validar($data[0]);
+        try {
+            foreach ($dados as $validador => $data) {
+                $data[1]->validar($data[0]);
+            }
+            return $this->tM->createTurma($dados['nome'][0], $dados['descricao'][0], $dados['tipo'][0]);
+        } catch (\Throwable $th) {
+            return $this->sendJson(["error" => $th->getMessage()], 400);
         }
-        return $this->tM->createTurma($dados['nome'][0], $dados['descricao'][0], $dados['tipo'][0]);
     }
 
     public function getAllTurmas()
@@ -79,15 +83,17 @@ class TurmaController extends BaseController
             'descricao' => [$_POST["descricao"], new ValidarDescricao()],
             'tipo' => [$_POST["tipo"],  new ValidarTipo()],
         ];
-
-        foreach ($dados as $validador => $data) {
-            $data[1]->validar($data[0]);
+        try {
+            foreach ($dados as $validador => $data) {
+                $data[1]->validar($data[0]);
+            }
+            if (!empty($this->tM->editTurma($id, $dados['nome'][0], $dados['descricao'][0], $dados['tipo'][0]))) {
+                $this->sendJson(["error" => false]);
+                return;
+            }
+        } catch (\Throwable $th) {
+            return $this->sendJson(["error" => $th->getMessage()], 400);
         }
-        if (!empty($this->tM->editTurma($id, $dados['nome'][0], $dados['descricao'][0], $dados['tipo'][0]))) {
-            $this->sendJson(["error" => false]);
-            return;
-        }
-        $this->sendJson(["error" => true]);
     }
 
 

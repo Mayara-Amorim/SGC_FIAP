@@ -1,5 +1,5 @@
 <?php
-require_once 'src\app\Database\ConnectionFactory.php';
+require_once  __DIR__ . '/../Database/ConnectionFactory.php';
 class EstudanteModel
 {
     public $db;
@@ -11,7 +11,7 @@ class EstudanteModel
 
     public function createEstudante($nome, $data_nascimeto, $email)
     {
-        $st = $this->db->prepare('INSERT INTO TB_ESTUDANTES (nome, data_nascimento, email) VALUES(?,?,?)');
+        $st = $this->db->prepare('INSERT INTO tb_estudantes (nome, data_nascimento, email) VALUES(?,?,?)');
         $st->bindParam(1, $nome, PDO::PARAM_STR);
         $st->bindParam(2, $data_nascimeto, PDO::PARAM_STR);
         $st->bindParam(3, $email, PDO::PARAM_STR);
@@ -21,7 +21,7 @@ class EstudanteModel
     }
     public function editEstudante($id, $nome, $data_nascimeto, $email)
     {
-        $st = $this->db->prepare('UPDATE TB_ESTUDANTES SET nome=?, data_nascimento=?, email=? WHERE id= ?');
+        $st = $this->db->prepare('UPDATE tb_estudantes SET nome=?, data_nascimento=?, email=? WHERE id= ?');
         $st->bindParam(1, $nome, PDO::PARAM_STR);
         $st->bindParam(2, $data_nascimeto, PDO::PARAM_STR);
         $st->bindParam(3, $email, PDO::PARAM_STR);
@@ -30,14 +30,14 @@ class EstudanteModel
     }
     public function softDeleteEstudante($id)
     {
-        $st = $this->db->prepare('UPDATE TB_ESTUDANTES SET ativo = 0, desativado_em = CURRENT_DATE WHERE id = ?');
+        $st = $this->db->prepare('UPDATE tb_estudantes SET ativo = 0, desativado_em = CURRENT_DATE WHERE id = ?');
         $st->bindParam(1, $id, PDO::PARAM_INT);
         $st->execute();
     }
     public function getAllEstudantes($offset = 0, $limit = 15, $search = '', $order = null)
     {
-        $sql = "SELECT * FROM TB_ESTUDANTES where ativo=1";
-        $sqlCount = "SELECT COUNT(*) FROM TB_ESTUDANTES  where ativo=1";
+        $sql = "SELECT * FROM tb_estudantes where ativo=1";
+        $sqlCount = "SELECT COUNT(*) FROM tb_estudantes  where ativo=1";
         $params = [];
 
         if (!empty($search)) {
@@ -81,20 +81,20 @@ class EstudanteModel
 
     public function getByAtivoEstudantes()
     {
-        $st = $this->db->query('SELECT * FROM TB_ESTUDANTES WHERE ATIVO=1');
+        $st = $this->db->query('SELECT * FROM tb_estudantes WHERE ATIVO=1');
         $st->execute();
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }
     public function getByIdEstudante($id)
     {
-        $st = $this->db->prepare('SELECT * FROM TB_ESTUDANTES WHERE id= ?');
+        $st = $this->db->prepare('SELECT * FROM tb_estudantes WHERE id= ?');
         $st->bindParam(1, $id, PDO::PARAM_INT);
         $st->execute();
         return $st->fetch(PDO::FETCH_ASSOC);
     }
     public function getByNome($nome)
     {
-        $st = $this->db->prepare('SELECT * FROM TB_ESTUDANTES  where nome like = ?');
+        $st = $this->db->prepare('SELECT * FROM tb_estudantes  where nome like = ?');
         $st->execute(['%' . $nome . '%']);
         return $st->fetchAll(PDO::FETCH_ASSOC);
     }

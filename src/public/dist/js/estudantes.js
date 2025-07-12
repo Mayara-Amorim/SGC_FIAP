@@ -125,7 +125,7 @@ function createEstudante() {
     })
     .catch((ex) => {
       console.log(ex);
-      return notifyError("Falha na autenticação");
+      notifyError(ex);
     })
     .always(() => {
       //hideLoadingModal();
@@ -166,6 +166,7 @@ function editarEstudante(id) {
     })
     .catch((err) => {
       console.error(err);
+      notifyError(err.responseJson.error);
     })
     .always(() => {
       //hideLoadingModal();
@@ -236,6 +237,7 @@ function update(id) {
     })
     .catch((err) => {
       console.log(err);
+      notifyError(err.responseJson.error);
     })
     .always(() => {
       ////hideLoadingModal();
@@ -250,6 +252,7 @@ function deletarEstudante(id) {
     })
     .catch((err) => {
       console.error(err);
+      notifyError(err.responseJson.error);
     })
     .always(() => {
       ////hideLoadingModal();

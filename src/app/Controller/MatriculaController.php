@@ -20,7 +20,7 @@ class MatriculaController extends BaseController
             $this->sendJson(["error" => false]);
         } catch (\Throwable $th) {
             error_log($th->getMessage(), 0, "/dev/stderr");
-            $this->sendJson(["error" => true], 400);
+            $this->sendJson(["error" => "Não foi possível matricular este estudante nessa turma!"], 400);
         }
     }
 
@@ -41,6 +41,10 @@ class MatriculaController extends BaseController
 
     public function delete($id)
     {
-        return $this->mM->softDeleteMatricula($id);
+        try {
+            return $this->mM->softDeleteMatricula($id);
+        } catch (\Throwable $th) {
+            $this->sendJson(["error" => "Não foi deletar"], 400);
+        }
     }
 }
