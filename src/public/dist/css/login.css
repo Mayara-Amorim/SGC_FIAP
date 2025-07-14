@@ -14,27 +14,25 @@ html, body {
 .login-text {
     width: 50%;
     background: linear-gradient(
-    135deg, /* Ângulo do gradiente */
-    #000000 0%, /* Quase preto */
-    #1a0a2a 25%, /* Um roxo bem escuro */
-    #ed145b 50%, /* Seu tom de rosa/vermelho */
-    #f26b6b 75%, /* Um rosa mais claro */
-    #000000 100% /* Volta para quase preto */
+    135deg,  Ângulo do gradiente
+    #000000 0%,  
+    #1a0a2a 25%,  
+    #ed145b 50%,  
+    #f26b6b 75%,  
+    #000000 100% 
   );
-  /* Define o tamanho do gradiente para ser maior que a tela, permitindo a movimentação */
+   
   background-size: 400% 400%;
-  /* Aplica a animação: nome, duração (bem longa), infinito e alternado */
   animation: etherealAurora 10s ease infinite alternate;
-  /* Garante que o corpo preenche a tela inteira */
   min-height: 100vh;
-  margin: 0; /* Remove margens padrão */
+  margin: 0; 
   overflow: hidden;
     color: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 4rem;
-    /* animation: aurora 6s infinite alternate; */
+     animation: aurora 6s infinite alternate;
     overflow: hidden;
 }
 
